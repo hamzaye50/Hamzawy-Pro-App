@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}تحميل فيديو - فيديو برو{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-download"></i> تحميل فيديو</h1>
+        <p>حمّل فيديوهات من يوتيوب؏ إنستقرام؏ تيك توك و X — بدون علامات مائية!</p>
+    </div>
+</div>
+<div class="container" style="margin-top:-1rem">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="search-box">
+                <form id="downloadForm">
+                    <div class="search-input-group">
+                        <input type="url" id="videoUrl" class="form-control" placeholder="الصق رابط الفيديو هنا..." required>
+                        <button type="submit" class="btn btn-gradient">تحميل</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
