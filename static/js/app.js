@@ -1,0 +1,1 @@
+/* ... JS Logic as provided in the read output ... */

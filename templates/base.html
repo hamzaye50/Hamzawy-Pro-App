@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}فيديو برو - حمزاوي برو{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="points-earn-toast" id="pointsEarnToast"></div>
+    <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+        <div class="container">
+            <a class="navbar-brand brand-logo" href="{{ url_for('index') }}">
+                <i class="bi bi-play-btn-fill"></i>
+                <span>فيديو برو</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list" style="font-size:1.4rem;color:var(--text-primary)"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">
+                            <i class="bi bi-house-fill"></i> الرئيسية
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'search_page' %}active{% endif %}" href="{{ url_for('search_page') }}">
+                            <i class="bi bi-compass"></i> اكتشف
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'download_page' %}active{% endif %}" href="{{ url_for('download_page') }}">
+                            <i class="bi bi-download"></i> تحميل
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'leaderboard' %}active{% endif %}" href="{{ url_for('leaderboard') }}">
+                            <i class="bi bi-trophy"></i> المتصدرين
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="points-badge-nav" title="نقاط حمزاوي">
+                        <i class="bi bi-star-fill"></i>
+                        <span id="navPointsBadge">{{ user.points }}</span>
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="تبديل المظهر">
+                        <i class="bi bi-moon-fill" id="themeIcon"></i>
+                    </button>
+                    <a href="{{ url_for('profile', user_id=user.id) }}" class="user-avatar-link">
+                        <div class="user-avatar-sm">
+                            {{ user.display_name[0] if user else 'م' }}
+                        </div>
+                        <span class="d-none d-lg-inline" style="color:var(--text-primary);font-weight:600;font-size:0.9rem">{{ user.display_name if user else 'مستخدم' }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mt-3">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <nav class="bottom-nav d-lg-none">
+        <a href="{{ url_for('index') }}" class="bottom-nav-item {% if request.endpoint == 'index' %}active{% endif %}">
+            <i class="bi bi-house-fill"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="{{ url_for('search_page') }}" class="bottom-nav-item {% if request.endpoint == 'search_page' %}active{% endif %}">
+            <i class="bi bi-compass"></i>
+            <span>اكتشف</span>
+        </a>
+        <a href="{{ url_for('download_page') }}" class="bottom-nav-item {% if request.endpoint == 'download_page' %}active{% endif %}">
+            <i class="bi bi-download"></i>
+            <span>تحميل</span>
+        </a>
+        <a href="{{ url_for('leaderboard') }}" class="bottom-nav-item {% if request.endpoint == 'leaderboard' %}active{% endif %}">
+            <i class="bi bi-trophy"></i>
+            <span>نقاط</span>
+        </a>
+        <a href="{{ url_for('profile', user_id=user.id) }}" class="bottom-nav-item {% if request.endpoint == 'profile' %}active{% endif %}">
+            <i class="bi bi-person-fill"></i>
+            <span>حسابي</span>
+        </a>
+    </nav>
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index:9999">
+        <div id="appToast" class="toast align-items-center text-bg-success border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
